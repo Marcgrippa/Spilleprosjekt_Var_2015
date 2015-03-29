@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class Brett {
 
-	private AbstractTile[][] board = new AbstractTile[10][10];
+	private static final int dim = 30;
+	private AbstractTile[][] board = new AbstractTile[dim][dim];
 	private List<AbstractTile> kort = new ArrayList<AbstractTile>();
 	
 	
@@ -98,13 +99,11 @@ public class Brett {
 		ArrayList klarKort = stokk(kort);
 		this.kort = klarKort;
 		fordelBrett(kort);
-		
 	}
 	
 	public void print(){
-		for(int i = 0; i < 10; i ++){
-			System.out.println("------------------------");
-			for(int j = 0; j < 10; j ++){
+		for(int i = dim/4; i < 3*dim/4; i ++){
+			for(int j = dim/4; j < 3*dim/4; j ++){
 				if(board[i][j] == null){
 					System.out.print("  " + "|");
 				}
@@ -142,9 +141,9 @@ public class Brett {
 		}
 	}
 	
-	private void fordelBrett(List<AbstractTile> kort2){
-		for(int i = 0; i < kort2.size(); i++){
-			plasserKort(kort2.get(i), 5,5);
+	private void fordelBrett(List<AbstractTile> kort){
+		for(int i = 0; i < kort.size(); i++){
+			plasserKort(kort.get(i), dim/2,dim/2);
 		}
 	}
 	
@@ -157,7 +156,12 @@ public class Brett {
 				plasserKort(tile, x+1, y);
 			}
 			else{
-				board[x+1][y] = tile;
+				if(sjekkAndre(x+1, y)){
+					plasserKort(tile, x, y);
+				}
+				else{
+					board[x+1][y] = tile;					
+				}
 			}
 			break;
 		case 1:
@@ -165,7 +169,12 @@ public class Brett {
 				plasserKort(tile, x-1, y);
 			}
 			else{
-				board[x-1][y] = tile;
+				if(sjekkAndre(x-1, y)){
+					plasserKort(tile, x, y);
+				}
+				else{
+					board[x-1][y] = tile;					
+				}
 			}
 			break;
 		case 2:
@@ -173,7 +182,12 @@ public class Brett {
 				plasserKort(tile, x, y+1);
 			}
 			else{
-				board[x][y+1] = tile;
+				if(sjekkAndre(x, y+1)){
+					plasserKort(tile, x, y);
+				}
+				else{
+					board[x][y+1] = tile;					
+				}
 			}
 			break;
 		case 3:
@@ -181,10 +195,31 @@ public class Brett {
 				plasserKort(tile, x, y-1);
 			}
 			else{
-				board[x][y-1] = tile;
+				if(sjekkAndre(x, y-1)){
+					plasserKort(tile, x, y);
+				}
+				else{
+					board[x][y-1] = tile;					
+				}
 			}
 			break;
 		}
-		
+	}
+	
+	private boolean sjekkAndre(int x, int y){
+		int j = 0;
+		if(board[x+1][y] != null){
+			j++;
+		}
+		if(board[x-1][y] != null){
+			j++;
+		}
+		if(board[x][y+1] != null){
+			j++;
+		}
+		if(board[x][y-1] != null){
+			j++;
+		}
+		return(j>=3);
 	}
 }
