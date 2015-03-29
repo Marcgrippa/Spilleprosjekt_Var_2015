@@ -1,3 +1,4 @@
+package spillprosjekt;
 import java.util.ArrayList;
 
 
@@ -139,7 +140,7 @@ public class Inventory {
 	/*
 	 * Fjerner et item fra inventori listen
 	 */
-	private void removeItem(Item item){
+	public void removeItem(Item item){
 		if(inventory.contains(item)){
 			inventory.remove(item);
 		}

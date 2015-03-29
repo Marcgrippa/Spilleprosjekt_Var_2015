@@ -1,3 +1,4 @@
+package spillprosjekt;
 
 public class MoveCommand {
 
