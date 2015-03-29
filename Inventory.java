@@ -83,24 +83,31 @@ public class Inventory {
 			
 			case "ammo":
 				setAmmoNumber(ammoNumber + 4);
+				item.setSpaceUse(1);
 				break;
 			case "fireArm":
 				setCanFire(true);
+				item.setSpaceUse(2);
 				break;
 			case "knife":
 				setCanStab(true);
+				item.setSpaceUse(1);
 				break;
 			case "keyCard":
 				setKeyCard(true);
+				item.setSpaceUse(1);
 				break;
 			case "flashLight":
 				setFlashLight(true);
+				item.setSpaceUse(1);
 				break;
 			case "coffee":
 				setCofe(true);
+				item.setSpaceUse(1);
 				break;
 			case "food":
 				setFood(true);
+				item.setSpaceUse(1);
 				break;
 			default:
 				break;
