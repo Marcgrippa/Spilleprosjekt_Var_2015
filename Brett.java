@@ -25,6 +25,16 @@ public class Brett {
 		EksempelTile åtte = new EksempelTile("8");
 		EksempelTile ni = new EksempelTile("9");
 		EksempelTile ti = new EksempelTile("10");
+		EksempelTile elve = new EksempelTile("11");
+		EksempelTile tolv = new EksempelTile("12");
+		EksempelTile tretten = new EksempelTile("13");
+		EksempelTile fjorten = new EksempelTile("14");
+		EksempelTile femten = new EksempelTile("15");
+		EksempelTile seksten = new EksempelTile("16");
+		EksempelTile sytten = new EksempelTile("17");
+		EksempelTile atten = new EksempelTile("18");
+		EksempelTile nitten = new EksempelTile("19");
+		EksempelTile tyve = new EksempelTile("20");
 		kort.add(en);
 		kort.add(to);
 		kort.add(tre);
@@ -35,6 +45,16 @@ public class Brett {
 		kort.add(åtte);
 		kort.add(ni);
 		kort.add(ti);
+		kort.add(elve);
+		kort.add(tolv);
+		kort.add(tretten);
+		kort.add(fjorten);
+		kort.add(femten);
+		kort.add(seksten);
+		kort.add(sytten);
+		kort.add(atten);
+		kort.add(nitten);
+		kort.add(tyve);
 		ArrayList klarKort = stokk(kort);
 		this.kort = klarKort;
 		fordelBrett(kort);
@@ -46,7 +66,7 @@ public class Brett {
 			System.out.println("------------------------");
 			for(int j = 0; j < 10; j ++){
 				if(board[i][j] == null){
-					System.out.print("0" + "|");
+					System.out.print(" " + "|");
 				}
 				else{
 					System.out.print(board[i][j] + "|");					
@@ -90,7 +110,7 @@ public class Brett {
 	
 	private void plasserKort(AbstractTile tile, int x, int y){
 		Random tilfTall = new Random();
-		int plass = tilfTall.nextInt(3);
+		int plass = tilfTall.nextInt(4);
 		switch(plass){
 		case 0:
 			if(board[x+1][y] != null){
