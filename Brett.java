@@ -15,15 +15,15 @@ public class Brett {
 	}
 	
 	public void start(){
-		EksempelTile en = new EksempelTile("1");
-		EksempelTile to = new EksempelTile("2");
-		EksempelTile tre = new EksempelTile("3");
-		EksempelTile fire = new EksempelTile("4");
-		EksempelTile fem = new EksempelTile("5");
-		EksempelTile seks = new EksempelTile("6");
-		EksempelTile sju = new EksempelTile("7");
-		EksempelTile åtte = new EksempelTile("8");
-		EksempelTile ni = new EksempelTile("9");
+		EksempelTile en = new EksempelTile("01");
+		EksempelTile to = new EksempelTile("02");
+		EksempelTile tre = new EksempelTile("03");
+		EksempelTile fire = new EksempelTile("04");
+		EksempelTile fem = new EksempelTile("05");
+		EksempelTile seks = new EksempelTile("06");
+		EksempelTile sju = new EksempelTile("07");
+		EksempelTile åtte = new EksempelTile("08");
+		EksempelTile ni = new EksempelTile("09");
 		EksempelTile ti = new EksempelTile("10");
 		EksempelTile elve = new EksempelTile("11");
 		EksempelTile tolv = new EksempelTile("12");
@@ -35,6 +35,26 @@ public class Brett {
 		EksempelTile atten = new EksempelTile("18");
 		EksempelTile nitten = new EksempelTile("19");
 		EksempelTile tyve = new EksempelTile("20");
+		EksempelTile t1 = new EksempelTile("21");
+		EksempelTile t2 = new EksempelTile("22");
+		EksempelTile t3 = new EksempelTile("23");
+		EksempelTile t4 = new EksempelTile("24");
+		EksempelTile t5 = new EksempelTile("25");
+		EksempelTile t6 = new EksempelTile("26");
+		EksempelTile t7 = new EksempelTile("27");
+		EksempelTile t8 = new EksempelTile("28");
+		EksempelTile t9 = new EksempelTile("29");
+		EksempelTile tretti = new EksempelTile("30");
+		EksempelTile tr1 = new EksempelTile("31");
+		EksempelTile tr2 = new EksempelTile("32");
+		EksempelTile tr3 = new EksempelTile("33");
+		EksempelTile tr4 = new EksempelTile("34");
+		EksempelTile tr5 = new EksempelTile("35");
+		EksempelTile tr6 = new EksempelTile("36");
+		EksempelTile tr7 = new EksempelTile("37");
+		EksempelTile tr8 = new EksempelTile("38");
+		EksempelTile tr9 = new EksempelTile("39");
+		EksempelTile førti = new EksempelTile("40");
 		kort.add(en);
 		kort.add(to);
 		kort.add(tre);
@@ -55,6 +75,26 @@ public class Brett {
 		kort.add(atten);
 		kort.add(nitten);
 		kort.add(tyve);
+		kort.add(t1);
+		kort.add(t2);
+		kort.add(t3);
+		kort.add(t4);
+		kort.add(t5);
+		kort.add(t6);
+		kort.add(t7);
+		kort.add(t8);
+		kort.add(t9);
+		kort.add(tretti);
+		kort.add(tr1);
+		kort.add(tr2);
+		kort.add(tr3);
+		kort.add(tr4);
+		kort.add(tr5);
+		kort.add(tr6);
+		kort.add(tr7);
+		kort.add(tr8);
+		kort.add(tr9);
+		kort.add(førti);
 		ArrayList klarKort = stokk(kort);
 		this.kort = klarKort;
 		fordelBrett(kort);
@@ -66,7 +106,7 @@ public class Brett {
 			System.out.println("------------------------");
 			for(int j = 0; j < 10; j ++){
 				if(board[i][j] == null){
-					System.out.print(" " + "|");
+					System.out.print("  " + "|");
 				}
 				else{
 					System.out.print(board[i][j] + "|");					
