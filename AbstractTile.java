@@ -5,7 +5,7 @@ public abstract class AbstractTile {
 	private String navn;
 	
 	public AbstractTile(String navn){
-		this.navn = navn;
+		setNavn(navn);
 	}
 
 	public String getNavn() {
@@ -16,4 +16,7 @@ public abstract class AbstractTile {
 		this.navn = navn;
 	}
 	
+	public String toString(){
+		return this.getNavn();
+	}
 }
