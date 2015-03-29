@@ -96,7 +96,7 @@ public class Brett {
 		kort.add(tr8);
 		kort.add(tr9);
 		kort.add(førti);
-		ArrayList klarKort = stokk(kort);
+		ArrayList<AbstractTile> klarKort = stokk(kort);
 		this.kort = klarKort;
 		fordelBrett(kort);
 	}
@@ -130,7 +130,7 @@ public class Brett {
 		return nyeKort;
 	}
 	
-	private int finnUbruktIndex(ArrayList kort, int grense){
+	private int finnUbruktIndex(ArrayList<AbstractTile> kort, int grense){
 		Random tilfTall = new Random();
 		int tall = tilfTall.nextInt(grense);
 		if(kort.get(tall) == null){
@@ -142,8 +142,11 @@ public class Brett {
 	}
 	
 	private void fordelBrett(List<AbstractTile> kort){
+		int midten = dim/2;
+		board[midten][midten] = kort.get(0);
+		kort.remove(0);
 		for(int i = 0; i < kort.size(); i++){
-			plasserKort(kort.get(i), dim/2,dim/2);
+			plasserKort(kort.get(i), midten,midten);
 		}
 	}
 	
@@ -155,52 +158,44 @@ public class Brett {
 			if(board[x+1][y] != null){
 				plasserKort(tile, x+1, y);
 			}
+			else if(sjekkAndre(x+1, y)){
+				plasserKort(tile, x, y);
+			}
 			else{
-				if(sjekkAndre(x+1, y)){
-					plasserKort(tile, x, y);
-				}
-				else{
-					board[x+1][y] = tile;					
-				}
+				board[x+1][y] = tile;
 			}
 			break;
 		case 1:
 			if(board[x-1][y] != null){
 				plasserKort(tile, x-1, y);
 			}
+			else if(sjekkAndre(x-1, y)){
+				plasserKort(tile, x, y);
+			}
 			else{
-				if(sjekkAndre(x-1, y)){
-					plasserKort(tile, x, y);
-				}
-				else{
-					board[x-1][y] = tile;					
-				}
+				board[x-1][y] = tile;
 			}
 			break;
 		case 2:
 			if(board[x][y+1] != null){
 				plasserKort(tile, x, y+1);
 			}
+			else if(sjekkAndre(x, y+1)){
+				plasserKort(tile, x, y);
+			}
 			else{
-				if(sjekkAndre(x, y+1)){
-					plasserKort(tile, x, y);
-				}
-				else{
-					board[x][y+1] = tile;					
-				}
+				board[x][y+1] = tile;
 			}
 			break;
 		case 3:
 			if(board[x][y-1] != null){
 				plasserKort(tile, x, y-1);
 			}
+			else if(sjekkAndre(x, y-1)){
+				plasserKort(tile, x, y);
+			}
 			else{
-				if(sjekkAndre(x, y-1)){
-					plasserKort(tile, x, y);
-				}
-				else{
-					board[x][y-1] = tile;					
-				}
+				board[x][y-1] = tile;
 			}
 			break;
 		}
@@ -220,6 +215,6 @@ public class Brett {
 		if(board[x][y-1] != null){
 			j++;
 		}
-		return(j>=3);
+		return(j>=2);
 	}
 }
