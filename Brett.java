@@ -1,3 +1,15 @@
+/*
+ * Klasse for å lage et tilfeldig lagd brett ut ifra en gitt liste med kort. Det er noen parametre vi kan 
+ * endre hvis vi vil ha mer sortert eller mindre fordelt. I koden kan det se ut som om det ikke skal havne
+ * ett rom med fire utganger, men det kan skje, og jeg vet hvorfor. Hvis vi trenger kan jeg lage en metode
+ * som går gjennom brettet og setter de rommene med fire utganger på nytt, men jeg tror ikke det blir noe 
+ * behov for det, siden vi skal jo ha låste dører og andre kule ting. 
+ * Koden kan kræsje, men det skjer veldig sjeldent. Det skjer fordi funksjonen kaller seg selv hvis den skal 
+ * lete videre. Noen ganger kaller den seg selv nok ganger til å kaste en Stack-overflow-exception. Jeg vet 
+ * ikke om det skjer lenger en gang, siden jeg har bare sett det en gang. Jo flere kort vi har, jo oftere 
+ * skjer det tror jeg.
+ */
+
 package spillprosjekt;
 
 import java.util.ArrayList;
@@ -6,12 +18,12 @@ import java.util.Random;
 
 public class Brett {
 
-	private static final int dim = 30;
+	private static final int dim = 30; // Vi må bare finne ett passende tall ut ifra hvor mange kort vi har.
 	private AbstractTile[][] board = new AbstractTile[dim][dim];
 	private List<AbstractTile> kort = new ArrayList<AbstractTile>();
 	
 	
-	public Brett(){
+	public Brett(){ // Vi kan kanskje legge noen metoder inni her som vi uansett hadde kjørt, men vi får se hva vi gjør. Det burde ikke være vanskelig å bytte ut.
 		
 	}
 	
@@ -101,8 +113,8 @@ public class Brett {
 		fordelBrett(kort);
 	}
 	
-	public void print(){
-		for(int i = dim/4; i < 3*dim/4; i ++){
+	public void print(){ 
+		for(int i = dim/4; i < 3*dim/4; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
 			for(int j = dim/4; j < 3*dim/4; j ++){
 				if(board[i][j] == null){
 					System.out.print("  " + "|");
@@ -115,7 +127,7 @@ public class Brett {
 		}
 	}
 
-	private ArrayList<AbstractTile> stokk(List<AbstractTile> kort){
+	private ArrayList<AbstractTile> stokk(List<AbstractTile> kort){ // en shuffle-funksjon. Jeg synes ArrayList burde ha det innebygd.
 		ArrayList<AbstractTile> nyeKort = new ArrayList<AbstractTile>();
 		int lengde = kort.size();
 		for(int i = 0; i < lengde; i++){
@@ -130,7 +142,7 @@ public class Brett {
 		return nyeKort;
 	}
 	
-	private int finnUbruktIndex(ArrayList<AbstractTile> kort, int grense){
+	private int finnUbruktIndex(ArrayList<AbstractTile> kort, int grense){ // Finner en tilfeldig ubrukt plass. 
 		Random tilfTall = new Random();
 		int tall = tilfTall.nextInt(grense);
 		if(kort.get(tall) == null){
@@ -143,16 +155,16 @@ public class Brett {
 	
 	private void fordelBrett(List<AbstractTile> kort){
 		int midten = dim/2;
-		board[midten][midten] = kort.get(0);
-		kort.remove(0);
+		board[midten][midten] = kort.get(0); // Jeg må plassere det første kortet her, hvis ikke havner det ikke i midten. 
+		kort.remove(0); // Hvis du finner en "pop" lignende metode for ArrayList kan du bruke den istedet. 
 		for(int i = 0; i < kort.size(); i++){
 			plasserKort(kort.get(i), midten,midten);
 		}
 	}
 	
-	private void plasserKort(AbstractTile tile, int x, int y){
+	private void plasserKort(AbstractTile tile, int x, int y){ //metode for å plassere kort tilfeldig.
 		Random tilfTall = new Random();
-		int plass = tilfTall.nextInt(4);
+		int plass = tilfTall.nextInt(4); // Tilfeldig tall for å velge hvor den skal være. 
 		switch(plass){
 		case 0:
 			if(board[x+1][y] != null){
@@ -162,7 +174,7 @@ public class Brett {
 				plasserKort(tile, x, y);
 			}
 			else{
-				board[x+1][y] = tile;
+				board[x+1][y] = tile; // Først to tester for å se om den skal kalle seg selv på nytt og prøve igjen, så blir rommet plassert. 
 			}
 			break;
 		case 1:
@@ -201,7 +213,7 @@ public class Brett {
 		}
 	}
 	
-	private boolean sjekkAndre(int x, int y){
+	private boolean sjekkAndre(int x, int y){ // Sjekker om tilesene ved siden av finnes.
 		int j = 0;
 		if(board[x+1][y] != null){
 			j++;
