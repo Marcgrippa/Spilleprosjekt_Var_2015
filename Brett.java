@@ -27,6 +27,13 @@ public class Brett {
 		
 	}
 	
+	public Brett(ArrayList<AbstractTile> innData){
+		this.kort = innData;
+		ArrayList<AbstractTile> klarKort = stokk(kort);
+		this.kort = klarKort;
+		fordelBrett(kort);
+	}
+	
 	public void start(){
 		EksempelTile en = new EksempelTile("01");
 		EksempelTile to = new EksempelTile("02");
@@ -116,12 +123,13 @@ public class Brett {
 	public void print(){ 
 		for(int i = dim/4; i < 3*dim/4; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
 			for(int j = dim/4; j < 3*dim/4; j ++){
-				if(board[i][j] == null){
-					System.out.print("  " + "|");
+				if(board[i][j] == null || !board[i][j].isVisible()){
+					System.out.print(" " + "|");
 				}
 				else{
 					System.out.print(board[i][j] + "|");					
 				}
+				System.out.print("|");
 			}
 			System.out.println("");
 		}
@@ -203,9 +211,9 @@ public class Brett {
 			if(board[x][y-1] != null){
 				plasserKort(tile, x, y-1);
 			}
-			else if(sjekkAndre(x, y-1)){
+			/*else if(sjekkAndre(x, y-1)){
 				plasserKort(tile, x, y);
-			}
+			}*/
 			else{
 				board[x][y-1] = tile;
 			}
@@ -228,5 +236,42 @@ public class Brett {
 			j++;
 		}
 		return(j>=2);
+	}
+	
+	public int getDim(){
+		return Brett.dim;
+	}
+	
+	public boolean moved(int x, int y){
+		try{
+			board[x][y].makeVisible();
+			return true;
+		}
+		catch(NullPointerException e){
+			System.out.println("Der er det ingenting!");
+			return false;
+		}
+	}
+	
+	public String getType(int x, int y){
+		return board[x][y].toString();
+	}
+	
+	public void tattTing(int x, int y){
+		String rom = board[x][y].getNavn();
+		switch(rom){
+		case "s":
+			board[x][y].setNavn("e");
+			break;
+		}
+	}
+
+	public void fjernetTrussel(int x, int y) {
+		String rom = board[x][y].getNavn();
+		switch(rom){
+		case "d":
+			board[x][y].setNavn("e");
+			break;
+		}
 	}
 }
