@@ -8,11 +8,14 @@ public class Human {
 	private int y;
 	private int sult;
 	private ArrayList<Item> inventory = new ArrayList<Item>();
+	private int HP;
+	
 	
 	public Human(int x, int y){
 		this.x = x;
 		this.y = y;
 		this.sult = 10;
+		this.HP = 72;
 	}
 	
 	public void opp(){
@@ -58,7 +61,7 @@ public class Human {
 		return false;
 	}
 
-	public ArrayList getInventory() {
+	public ArrayList<Item> getInventory() {
 		return this.inventory;
 	}
 	
@@ -68,5 +71,17 @@ public class Human {
 	
 	public void endreSult(int i){
 		this.sult += i;
+	}
+	
+	public int getHP() {
+		return HP;
+	}
+	
+	public void setHP(int hP) {
+		HP = hP;
+	}
+	
+	public void printHP(){
+		System.out.println("Du har nå: " + getHP());
 	}
 }

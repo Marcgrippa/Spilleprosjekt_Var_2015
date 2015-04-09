@@ -87,17 +87,15 @@ public class Hoved {
 			}				
 			rom = brett.getType(mann.getX(), mann.getY());
 			if(rom.equals("d")){
-				overDramatiskFightScene();
+				System.out.println("Du ble angrepet av et uidentifisert monster du mistet 5 liv");
+				mann.setHP(mann.getHP() - 5);
+				mann.printHP();
 				brett.fjernetTrussel(mann.getX(), mann.getY());
 			}
+			
 			brett.print();
 			System.out.println("Din sult er på: " + mann.getSult());
 		}
 		scanner.close();
-	}
-
-	private static void overDramatiskFightScene() {
-		System.out.println("Du har støtt på noe som vil slåss mot deg og ta tingene dine!");
-		System.out.println("Du overlevde uten noen komplikasjoner. Gratulerer.");
 	}
 }
