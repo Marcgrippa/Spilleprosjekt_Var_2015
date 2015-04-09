@@ -15,8 +15,4 @@ public class Item {
 	public String toString(){
 		return this.getNavn();
 	}
-	
-	public boolean er(Item ting){
-		return this.navn.equals(ting.toString());
-	}
 }
