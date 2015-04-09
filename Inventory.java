@@ -20,7 +20,7 @@ public class Inventory {
 	 * food: er true hvis du har plukket opp mat og gir deg energi
 	 */
 	
-	private ArrayList<Item_MIN> inventory = new ArrayList<Item_MIN>();
+	private ArrayList<Item> inventory = new ArrayList<Item>();
 	private int inventorySlotsMax = 10;
 	private int inventorySlotsUsed = 0;
 	private char character;
@@ -53,7 +53,7 @@ public class Inventory {
 	 * Ser om det er mulig å plukke opp flere items
 	 * Kan ikke plukke opp flere items hvis inventorien er full
 	 */
-	public boolean canPickUpItem(Item_MIN item){
+	public boolean canPickUpItem(Item item){
 		if(inventorySlotsUsed + item.getSpaceUse() < getInventorySlotsMax()){
 			return true;
 		}
@@ -65,9 +65,9 @@ public class Inventory {
 	 * Legger til et item i inventoriet 
 	 * Og kaller metoden som oppdatere tilstanden til karakteren
 	 */
-	public void addItemToInventory(Item_MIN item){
+	public void addItemToInventory(Item item){
 		if(canPickUpItem(item)){
-			inventory.add(new Item_MIN(item.getNavn()));
+			inventory.add(new Item(item.getName()));
 		}
 		updateAblities();
 
@@ -79,8 +79,8 @@ public class Inventory {
 	 * Type, hvis han har plukket opp et våpen så kan han nå skyte
 	 */
 	private void updateAblities(){
-		for(Item_MIN item: inventory){
-			switch (item.getNavn()) {
+		for(Item item: inventory){
+			switch (item.getName()) {
 			
 			case "ammo":
 				setAmmoNumber(ammoNumber + 4);
@@ -122,7 +122,7 @@ public class Inventory {
 	 * Hvis mottakeren har plass i inventoriet sitt, så fjernes itemet 
 	 * fra den tidligere eieren og legges til i den nye eieren
 	 */
-	public void changeItem(Inventory oldItemholder, Inventory newItemHolder, Item_MIN item){
+	public void changeItem(Inventory oldItemholder, Inventory newItemHolder, Item item){
 		if(canChange(newItemHolder, item)){
 			oldItemholder.removeItem(item);
 			newItemHolder.addItemToInventory(item);
@@ -133,14 +133,14 @@ public class Inventory {
 	/*
 	 * Returnere true hvis det er plass i inventoriet til den nye eieren av itemet
 	 */
-	private boolean canChange(Inventory newItemHolder, Item_MIN item) {
+	private boolean canChange(Inventory newItemHolder, Item item) {
 		return newItemHolder.getInventorySlotsUsed() + item.getSpaceUse() <= newItemHolder.getInventorySlotsMax();
 	}
 	
 	/*
 	 * Fjerner et item fra inventori listen
 	 */
-	public void removeItem(Item_MIN item){
+	public void removeItem(Item item){
 		if(inventory.contains(item)){
 			inventory.remove(item);
 		}
@@ -168,17 +168,17 @@ public class Inventory {
 	}
 	
 	public int getInventorySlotsUsed() {
-		for(Item_MIN itemslots: inventory){
+		for(Item itemslots: inventory){
 			inventorySlotsUsed += itemslots.getSpaceUse();
 		}
 		return inventorySlotsUsed;
 	}
 
-	public ArrayList<Item_MIN> getInventory() {
+	public ArrayList<Item> getInventory() {
 		return inventory;
 	}
 
-	public void setInventory(ArrayList<Item_MIN> inventory) {
+	public void setInventory(ArrayList<Item> inventory) {
 		this.inventory = inventory;
 	}
 

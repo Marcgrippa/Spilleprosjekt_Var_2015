@@ -12,8 +12,8 @@ public class Hoved {
 	}
 
 	private static void spill(){
-		int[] romFordeling = {15, 15, 10, 5, 5, 2, 2, 2, 2};
-		int[] tingFordeling = {15, 50};
+		int[] romFordeling = {15, 15, 10, 0, 0, 0, 0, 0, 0};
+		int[] tingFordeling = {15, 50, 50};
 		RoomFactory liste = new RoomFactory(romFordeling);
 		ItemFactory ting = new ItemFactory(tingFordeling);
 		ArrayList<Item> unfoundItems = ting.getList();
@@ -23,6 +23,7 @@ public class Hoved {
 		Scanner scanner = new Scanner(System.in);
 		brett.moved(mann.getX(), mann.getY());
 		brett.print();
+		System.out.println("Din sult er på: " + mann.getSult());
 		while(scanner.hasNext()){
 			String rom = brett.getType(mann.getX(), mann.getY());
 			String token = scanner.nextLine();
@@ -32,11 +33,17 @@ public class Hoved {
 				if(!brett.moved(mann.getX(), mann.getY())){
 					mann.ned();
 				}
+				else{
+					mann.endreSult(-1);					
+				}
 				break;
 			case "ned":
 				mann.ned();
 				if(!brett.moved(mann.getX(), mann.getY())){
 					mann.opp();
+				}
+				else{
+					mann.endreSult(-1);					
 				}
 				break;
 			case "venstre":
@@ -44,11 +51,17 @@ public class Hoved {
 				if(!brett.moved(mann.getX(), mann.getY())){
 					mann.hoyre();
 				}
+				else{
+					mann.endreSult(-1);					
+				}
 				break;
 			case "hoyre":
 				mann.hoyre();
 				if(!brett.moved(mann.getX(), mann.getY())){
 					mann.venstre();
+				}
+				else{
+					mann.endreSult(-1);					
 				}
 				break;
 			case "sok":
@@ -64,71 +77,25 @@ public class Hoved {
 			case "inventory":
 				System.out.println(mann.getInventory());
 				break;
-			}
+			case "spis":
+				if(mann.checkInventory(new Item("Mat"))){
+					mann.endreSult(3);
+				}
+				else{
+					System.out.println("Du har ikke noe mat du kan spise.");
+				}
+			}				
 			rom = brett.getType(mann.getX(), mann.getY());
 			if(rom.equals("d")){
 				overDramatiskFightScene();
 				brett.fjernetTrussel(mann.getX(), mann.getY());
 			}
-			
-			else if(rom.equals("p")){
-				powerNapScene();
-				//update life
-			}
-			
-			else if(rom.equals("c")){
-				computerRomScene();
-				//update map
-			}
-			
-			else if(rom.equals("l1")){
-				lockDoorScene(1);
-			}
-			
-			else if(rom.equals("l2")){
-				lockDoorScene(2);
-			}
-			
-			else if(rom.equals("l3")){
-				lockDoorScene(3);
-			}
-			
-			else if(rom.equals("l4")){
-				lockDoorScene(4);
-			}
-			
 			brett.print();
+			System.out.println("Din sult er på: " + mann.getSult());
 		}
 		scanner.close();
 	}
-	
-	private static void lockDoorScene(int x){
-		if(x == 1){
-			System.out.println("Døren oppover er låst");
-		}
-		else if(x == 2){
-			System.out.println("Døren til høyre er låst");
-		}
-		else if(x == 3){
-			System.out.println("Døren nedover er låst");
-		}
-		else if(x == 4){
-			System.out.println("Døren til venstre er låst");
-		}
-		
-	}
-	
-	private static void computerRomScene(){
-		System.out.println("Du fant en pc, hvis du har koden kan du få sett mer av kartet");
-		// Har man koden dukker det opp noen random rom på kartet ditt
-	}
 
-	private static void powerNapScene(){
-		System.out.println("Du fant en seng og øynene dine skriker etter en powernap");
-		// Hvis du velger å sove får du mer liv, ellers skjer det ingen ting
-		System.out.println("Du har fått 1 liv mer");
-	}
-	
 	private static void overDramatiskFightScene() {
 		System.out.println("Du har støtt på noe som vil slåss mot deg og ta tingene dine!");
 		System.out.println("Du overlevde uten noen komplikasjoner. Gratulerer.");
