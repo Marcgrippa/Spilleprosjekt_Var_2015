@@ -12,7 +12,7 @@ public class Hoved {
 	}
 
 	private static void spill(){
-		int[] romFordeling = {15, 15, 10};
+		int[] romFordeling = {15, 15, 10, 0, 0, 0, 0, 0, 0};
 		int[] tingFordeling = {15, 50, 50};
 		RoomFactory liste = new RoomFactory(romFordeling);
 		ItemFactory ting = new ItemFactory(tingFordeling);
