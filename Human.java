@@ -6,13 +6,11 @@ public class Human {
 
 	private int x;
 	private int y;
-	private int sult;
 	private ArrayList<Item> inventory = new ArrayList<Item>();
 	
 	public Human(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.sult = 10;
 	}
 	
 	public void opp(){
@@ -50,23 +48,10 @@ public class Human {
 	}
 	
 	public boolean checkInventory(Item ting){
-		for(Item t : inventory){
-			if(t.er(ting)){
-				return true;
-			}
-		}
-		return false;
+		return inventory.contains(ting);
 	}
 
-	public ArrayList getInventory() {
+	public ArrayList<Item> getInventory() {
 		return this.inventory;
-	}
-	
-	public int getSult(){
-		return this.sult;
-	}
-	
-	public void endreSult(int i){
-		this.sult += i;
 	}
 }
