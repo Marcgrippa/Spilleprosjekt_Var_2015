@@ -97,7 +97,7 @@ b. Sikring
 c. Generator
 b. Hvem som ligger i dvale
 i. Jane – not responding
-ii. Vladimir – Awake
+ii. Vladimir (Igor) – Awake
 iii. Merkel – Awake
 iv. Fusajiro – Awake
 c. Hvor lenge du har vært på reise
@@ -109,11 +109,30 @@ i. Hun virker gal og prøver å drepe deg (kommer mer her)
 5. Reparer kontrollrommet
 6. Oppdater pcen og se om det er flere feil ved romskipet
 7. Her kan vi legge inn flere ting hvis vi ønsker
-8. Du får valget – fortsette oppdraget eller å dra hjem til jorden
+8. Under reisen er det mange oppgaver som skal bli gjennomført
+a. Forskningsprosjekter et rom for hvert prosjekt. 
+i. Planter
+1. Må vannes, hvis de blir vannet 3 ganer får du en achievement.
+ii. Sorte hull
+1. Kjør tre datasimuleringer - Achievement
+iii. Gravitasjon
+1. Kjør tre datasimuleringer – Achievement 
+b. Finn alle lagrene
+i. 5 stykker – achievement
+ii. Fyller opp mat til fult, får litt skudd og bandasje per lager
+c. Vedlikehold av motorrommet
+i. Ved tre vedlikeholdsrunder får du en achievement
+d. Finne alle sidene fra dagbøkene
+i. Ved funn av alle sammen – achievement 
+e. Drepe Merkel 
+i. Achievement
+9. 
+10. Du får valget – fortsette oppdraget eller å dra hjem til jorden
 a. Hvis du fortsetter oppdraget er spillet over
 b. Hvis du velger å reise hjem til jorden må du få tak i alle passordene til de forskjellige medlemmene av gruppen. For å endre rute må alle taste inn sitt eget passord. 
 i. Passordene vil bli funnet i dagbøkene underveis?
 ii. Eller andre måter
+
 
 
 
