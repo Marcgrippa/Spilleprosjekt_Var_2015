@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class Brett {
 
-	private static final int dim = 30; // Vi må bare finne ett passende tall ut ifra hvor mange kort vi har.
+	private static final int dim = 100; // Vi må bare finne ett passende tall ut ifra hvor mange kort vi har.
 	private AbstractTile[][] board = new AbstractTile[dim][dim];
 	private List<AbstractTile> kort = new ArrayList<AbstractTile>();
 	
@@ -120,11 +120,15 @@ public class Brett {
 		fordelBrett(kort);
 	}
 	
-	public void print(){ 
+	public void print(int x, int y){ 
+		System.out.println("");
 		for(int i = dim/4; i < 3*dim/4; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
 			for(int j = dim/4; j < 3*dim/4; j ++){
 				if(board[i][j] == null || !board[i][j].isVisible()){
 					System.out.print(" " + "|");
+				}
+				else if(x == i && y == j){
+					System.out.print(board[i][j].toString().toUpperCase() + "|");
 				}
 				else{
 					System.out.print(board[i][j] + "|");					
@@ -273,5 +277,26 @@ public class Brett {
 			board[x][y].setNavn("e");
 			break;
 		}
+	}
+	
+	public String streng(int x, int y){
+		String s = "";
+		for(int i = dim/4; i < 3*dim/4; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
+			for(int j = dim/4; j < 3*dim/4; j ++){
+				s += "   ";
+				if(board[i][j] == null || !board[i][j].isVisible()){
+					s+=("  " + "|");
+				}
+				else if(x == i && y == j){
+					s+=(board[i][j].toString().toUpperCase() + "*|");
+				}
+				else{
+					s+=(board[i][j] + "|");					
+				}
+				s+=("|");
+			}
+			s+=("\n");
+		}
+		return s;
 	}
 }

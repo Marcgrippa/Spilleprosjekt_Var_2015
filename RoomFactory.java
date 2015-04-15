@@ -40,23 +40,8 @@ public class RoomFactory {
 		}
 		
 		for(int c = 0; c < antall[5]; c++){
-			rom.add(new NameRoom("l1")); // l1 for locked_up.
+			rom.add(new NameRoom("l")); // l for locked.
 		}
-		
-		for(int d = 0; d < antall[6]; d++){
-			rom.add(new NameRoom("l2")); // l2 for locked_right.
-		}
-		
-		for(int e = 0; e < antall[7]; e++){
-			rom.add(new NameRoom("l3")); // l3 for locked_down.
-		}
-		
-		for(int f = 0; f < antall[8]; f++){
-			rom.add(new NameRoom("l4")); // l4 for locked_left.
-		}
-		
-		
-		
 	}
 	
 	public ArrayList<NameRoom> getNameRoom(){

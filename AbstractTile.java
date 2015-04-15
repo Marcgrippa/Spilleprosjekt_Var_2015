@@ -7,7 +7,7 @@ public abstract class AbstractTile {
 	
 	public AbstractTile(String navn){
 		setNavn(navn);
-		visible = false;
+		visible = true;
 	}
 
 	public String getNavn() {

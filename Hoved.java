@@ -12,8 +12,8 @@ public class Hoved {
 	}
 
 	private static void spill(){
-		int[] romFordeling = {15, 15, 10, 0, 0, 0, 0, 0, 0};
-		int[] tingFordeling = {15, 50, 50};
+		int[] romFordeling = {10, 10, 10, 0, 0, 0, 0, 0, 0};
+		int[] tingFordeling = {0, 0, 0, Dagbok.getAntallSiderTotal()};
 		RoomFactory liste = new RoomFactory(romFordeling);
 		ItemFactory ting = new ItemFactory(tingFordeling);
 		ArrayList<Item> unfoundItems = ting.getList();
@@ -22,7 +22,7 @@ public class Hoved {
 		Human mann = new Human(dim/2, dim/2);
 		Scanner scanner = new Scanner(System.in);
 		brett.moved(mann.getX(), mann.getY());
-		brett.print();
+		brett.print(mann.getX(), mann.getY());
 		System.out.println("Din sult er på: " + mann.getSult());
 		while(scanner.hasNext()){
 			String rom = brett.getType(mann.getX(), mann.getY());
@@ -69,12 +69,13 @@ public class Hoved {
 					mann.addItem(unfoundItems.get(0));
 					unfoundItems.remove(0);
 					brett.tattTing(mann.getX(), mann.getY());
+					System.out.println(mann.getInventory());
 				}
 				else{
 					System.out.println("Dette rommet er tomt.");
 				}
 				break;
-			case "inventory":
+			case "i":
 				System.out.println(mann.getInventory());
 				break;
 			case "spis":
@@ -84,16 +85,18 @@ public class Hoved {
 				else{
 					System.out.println("Du har ikke noe mat du kan spise.");
 				}
+				break;
+			case "les":
+				mann.lesDagBok();
+				break;
 			}				
 			rom = brett.getType(mann.getX(), mann.getY());
 			if(rom.equals("d")){
-				System.out.println("Du ble angrepet av et uidentifisert monster du mistet 5 liv");
-				mann.setHP(mann.getHP() - 5);
-				mann.printHP();
+				System.out.println("Du har støtt på noe som vil slåss mot deg og ta tingene dine!");
+				System.out.println("Du overlevde uten noen komplikasjoner. Gratulerer.");
 				brett.fjernetTrussel(mann.getX(), mann.getY());
 			}
-			
-			brett.print();
+			brett.print(mann.getX(), mann.getY());
 			System.out.println("Din sult er på: " + mann.getSult());
 		}
 		scanner.close();

@@ -17,8 +17,12 @@ public class ItemFactory {
 			ting.add(new Item("Bandasje"));
 		}
 		
-		for(int k = 0; k < antall[1]; k++){
+		for(int k = 0; k < antall[2]; k++){
 			ting.add(new Item("Mat"));
+		}
+		
+		for(int l = 0; l < antall[3]; l++){
+			ting.add(new Item("side"));
 		}
 		ting = stokk(ting);
 	}

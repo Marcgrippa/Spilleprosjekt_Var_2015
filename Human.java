@@ -7,17 +7,27 @@ public class Human {
 	private int x;
 	private int y;
 	private int sult;
+	private Dagbok dagbok;
 	private ArrayList<Item> inventory = new ArrayList<Item>();
-	private int HP;
-	
+	private int liv;
 	
 	public Human(int x, int y){
 		this.x = x;
 		this.y = y;
 		this.sult = 10;
-		this.HP = 72;
+		dagbok = new Dagbok("Dagbok");
+		inventory.add(dagbok);
+		liv = 100;
 	}
 	
+	public int getLiv() {
+		return liv;
+	}
+
+	public void endreLiv(int endring) {
+		this.liv += endring;
+	}
+
 	public void opp(){
 		x--;
 	}
@@ -43,12 +53,20 @@ public class Human {
 	}
 	
 	public void addItem(Item ting){
-		inventory.add(ting);
+		if(ting.er(new Item("side"))){
+			dagbok.funnetSide();
+		}
+		else{
+			inventory.add(ting);			
+		}
 	}
 	
 	public void removeItem(Item ting){
-		if(inventory.contains(ting)){
-			inventory.remove(ting);
+		for(Item t : inventory){
+			if(t.er(ting)){
+				inventory.remove(t);
+				return;
+			}
 		}
 	}
 	
@@ -73,15 +91,15 @@ public class Human {
 		this.sult += i;
 	}
 	
-	public int getHP() {
-		return HP;
+	public void lesDagBok(){
+		dagbok.printBok();
 	}
 	
-	public void setHP(int hP) {
-		HP = hP;
+	public String getDagBok(){
+		return dagbok.streng();
 	}
 	
-	public void printHP(){
-		System.out.println("Du har nå: " + getHP());
+	public void fullSult(){
+		this.sult = 10;
 	}
 }
