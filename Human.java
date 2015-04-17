@@ -17,7 +17,7 @@ public class Human {
 		this.sult = 10;
 		dagbok = new Dagbok("Dagbok");
 		inventory.add(dagbok);
-		liv = 100;
+		liv = 150;
 	}
 	
 	public int getLiv() {

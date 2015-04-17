@@ -28,7 +28,7 @@ public class RoomFactory {
 		}
 		
 		for(int k = 0; k < antall[2]; k++){
-			rom.add(new NameRoom("d")); //d for danger.
+			rom.add(new NameRoom("r")); //d for danger.
 		}
 		
 		for(int a = 0; a < antall[3]; a++){

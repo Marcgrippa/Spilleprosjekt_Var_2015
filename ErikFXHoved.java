@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class ErikFXHoved {
 
-	int[] romFordeling = {100, 100, 100, 0, 50, 0, 0, 0, 0};
+	int[] romFordeling = {200, 200, 0, 0, 20, 0, 0, 0, 0};
 	int[] tingFordeling = {15, 5, 5, Dagbok.getAntallSiderTotal()};
 	RoomFactory liste = new RoomFactory(romFordeling);
 	ItemFactory ting = new ItemFactory(tingFordeling);
 	ArrayList<Item> unfoundItems = ting.getList();
 	Brett brett = new Brett(liste.getAbstractTile());
-	int dim = brett.getDim();
+	int dim = Brett.getDim();
 	Human mann = new Human(dim/2, dim/2);
 	String rom = brett.getType(mann.getX(), mann.getY());
 	
@@ -66,6 +66,9 @@ public class ErikFXHoved {
 		rom = brett.getType(mann.getX(), mann.getY());
 		if(rom.equals("d")){
 			kamp();
+		}
+		else if(rom.equals("b")){
+			forsteMote();
 		}
 		mann.endreSult(-1);
 		System.out.println("Din sult er på: " + mann.getSult());
@@ -186,5 +189,13 @@ public class ErikFXHoved {
 		if(brett.getType(mann.getX(), mann.getY()).equals("p")){
 			mann.fullSult();
 		}
+	}
+	
+	private void forsteMote(){
+		mann.endreLiv(-50);
+	}
+
+	public ArrayList<Integer> getBrettInt() {
+		return brett.getInt();
 	}
 }

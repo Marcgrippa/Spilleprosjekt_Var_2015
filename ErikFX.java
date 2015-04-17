@@ -27,6 +27,7 @@ public class ErikFX extends Application {
 	Label skudd_text;
 	Text popup_text;
 	Image bilde;
+	boolean bokSynlig;
 	ErikFXHoved hoved = new ErikFXHoved();
 
 	public static void main(String[] args) {
@@ -47,24 +48,24 @@ public class ErikFX extends Application {
 		skudd_text = new Label(hoved.antallSkudd() + "X skudd");
 		popup_text = new Text("Du gikk inn i ett nytt rom");
 		popup_text.setVisible(false);
-		popup_text.setFont(Font.font ("Verdana", 120));
+		popup_text.setFont(Font.font ("Verdana", 50));
 		popup_text.setTranslateX(100);
 		popup_text.setTranslateY(250);
+		bokSynlig = false;
 		
 		VBox root = new VBox();
 		HBox tekst = new HBox();
 		
-		root.getChildren().addAll(liv_text, sult_text, mat_text, bandasje_text, skudd_text, inventory_text, kart_text, bok_text);
-		tekst.getChildren().addAll(popup_text);
+		root.getChildren().addAll(liv_text, sult_text, mat_text, bandasje_text, skudd_text, inventory_text, kart_text);
+		tekst.getChildren().addAll(bok_text);
 
 		Group gruppe = new Group();
-		gruppe.getChildren().addAll(tekst, root);
+		gruppe.getChildren().addAll(root, tekst);
 
 		Scene scene = new Scene(gruppe, 500, 500);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			public void handle(final KeyEvent e){
-				tekst.getChildren().get(0).setVisible(false);
-				bok_text.setVisible(false);
+			public void handle(KeyEvent e){
+				tekst.setVisible(false);
 				switch(e.getCode()){
 				case UP:
 					hoved.opp();
@@ -85,9 +86,17 @@ public class ErikFX extends Application {
 					hoved.sok();
 					break;
 				case R:
-					hoved.les();
 					bok_text.setText(hoved.getbok());
-					bok_text.setVisible(true);
+					if(bokSynlig){
+						tekst.setVisible(false);
+						root.setVisible(true);
+						bokSynlig = false;
+					}
+					else{
+						tekst.setVisible(true);
+						root.setVisible(false);
+						bokSynlig = true;
+					}
 					break;
 				case E:
 					hoved.spis();
@@ -97,9 +106,6 @@ public class ErikFX extends Application {
 					break;
 				case P:
 					hoved.sov();
-					break;
-				case K:
-					tekst.getChildren().get(0).setVisible(true);
 					break;
 				default:
 					break;

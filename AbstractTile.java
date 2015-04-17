@@ -33,4 +33,23 @@ public abstract class AbstractTile {
 	public void makeInvisible(){
 		this.visible = false;
 	}
+	
+	public int getInt(){
+		switch(navn){
+		case "e":
+			return 0;
+		case "s":
+			return 1;
+		case "p":
+			return 4;
+		case "b":
+			return 3;
+		case "r":
+			return 2;
+		case "c":
+			return 5;
+		default:
+			return 0;
+		}
+	}
 }

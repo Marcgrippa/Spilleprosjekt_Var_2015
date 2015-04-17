@@ -34,92 +34,6 @@ public class Brett {
 		fordelBrett(kort);
 	}
 	
-	public void start(){
-		EksempelTile en = new EksempelTile("01");
-		EksempelTile to = new EksempelTile("02");
-		EksempelTile tre = new EksempelTile("03");
-		EksempelTile fire = new EksempelTile("04");
-		EksempelTile fem = new EksempelTile("05");
-		EksempelTile seks = new EksempelTile("06");
-		EksempelTile sju = new EksempelTile("07");
-		EksempelTile åtte = new EksempelTile("08");
-		EksempelTile ni = new EksempelTile("09");
-		EksempelTile ti = new EksempelTile("10");
-		EksempelTile elve = new EksempelTile("11");
-		EksempelTile tolv = new EksempelTile("12");
-		EksempelTile tretten = new EksempelTile("13");
-		EksempelTile fjorten = new EksempelTile("14");
-		EksempelTile femten = new EksempelTile("15");
-		EksempelTile seksten = new EksempelTile("16");
-		EksempelTile sytten = new EksempelTile("17");
-		EksempelTile atten = new EksempelTile("18");
-		EksempelTile nitten = new EksempelTile("19");
-		EksempelTile tyve = new EksempelTile("20");
-		EksempelTile t1 = new EksempelTile("21");
-		EksempelTile t2 = new EksempelTile("22");
-		EksempelTile t3 = new EksempelTile("23");
-		EksempelTile t4 = new EksempelTile("24");
-		EksempelTile t5 = new EksempelTile("25");
-		EksempelTile t6 = new EksempelTile("26");
-		EksempelTile t7 = new EksempelTile("27");
-		EksempelTile t8 = new EksempelTile("28");
-		EksempelTile t9 = new EksempelTile("29");
-		EksempelTile tretti = new EksempelTile("30");
-		EksempelTile tr1 = new EksempelTile("31");
-		EksempelTile tr2 = new EksempelTile("32");
-		EksempelTile tr3 = new EksempelTile("33");
-		EksempelTile tr4 = new EksempelTile("34");
-		EksempelTile tr5 = new EksempelTile("35");
-		EksempelTile tr6 = new EksempelTile("36");
-		EksempelTile tr7 = new EksempelTile("37");
-		EksempelTile tr8 = new EksempelTile("38");
-		EksempelTile tr9 = new EksempelTile("39");
-		EksempelTile førti = new EksempelTile("40");
-		kort.add(en);
-		kort.add(to);
-		kort.add(tre);
-		kort.add(fire);
-		kort.add(fem);
-		kort.add(seks);
-		kort.add(sju);
-		kort.add(åtte);
-		kort.add(ni);
-		kort.add(ti);
-		kort.add(elve);
-		kort.add(tolv);
-		kort.add(tretten);
-		kort.add(fjorten);
-		kort.add(femten);
-		kort.add(seksten);
-		kort.add(sytten);
-		kort.add(atten);
-		kort.add(nitten);
-		kort.add(tyve);
-		kort.add(t1);
-		kort.add(t2);
-		kort.add(t3);
-		kort.add(t4);
-		kort.add(t5);
-		kort.add(t6);
-		kort.add(t7);
-		kort.add(t8);
-		kort.add(t9);
-		kort.add(tretti);
-		kort.add(tr1);
-		kort.add(tr2);
-		kort.add(tr3);
-		kort.add(tr4);
-		kort.add(tr5);
-		kort.add(tr6);
-		kort.add(tr7);
-		kort.add(tr8);
-		kort.add(tr9);
-		kort.add(førti);
-		ArrayList<AbstractTile> klarKort = stokk(kort);
-		this.kort = klarKort;
-		fordelBrett(kort);
-	}
-	
 	public void print(int x, int y){ 
 		System.out.println("");
 		for(int i = dim/4; i < 3*dim/4; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
@@ -170,7 +84,18 @@ public class Brett {
 		board[midten][midten] = kort.get(0); // Jeg må plassere det første kortet her, hvis ikke havner det ikke i midten. 
 		kort.remove(0); // Hvis du finner en "pop" lignende metode for ArrayList kan du bruke den istedet. 
 		for(int i = 0; i < kort.size(); i++){
-			plasserKort(kort.get(i), midten,midten);
+			plasserKortError(kort.get(i), midten, midten);
+		}
+		board[midten][midten+1] = new EksempelTile("b");
+		fiksBrett(midten, midten);
+	}
+	
+	private void plasserKortError(AbstractTile tile, int x, int y){
+		try{
+			plasserKort(tile, x,y);
+		}
+		catch(StackOverflowError e){
+			plasserKortError(tile, x, y);
 		}
 	}
 	
@@ -215,9 +140,9 @@ public class Brett {
 			if(board[x][y-1] != null){
 				plasserKort(tile, x, y-1);
 			}
-			/*else if(sjekkAndre(x, y-1)){
+			else if(sjekkAndre(x, y-1)){
 				plasserKort(tile, x, y);
-			}*/
+			}
 			else{
 				board[x][y-1] = tile;
 			}
@@ -242,7 +167,7 @@ public class Brett {
 		return(j>=2);
 	}
 	
-	public int getDim(){
+	public static int getDim(){
 		return Brett.dim;
 	}
 	
@@ -297,6 +222,55 @@ public class Brett {
 			}
 			s+=("\n");
 		}
+		return s;
+	}
+	
+	private void fiksBrett(int x, int y){
+		int midten = (dim/2);
+		int nedreGrense = midten+9; 
+		int ovreGrense = midten-10;
+		int venstreGrense = midten-11;
+		int hoyreGrense = midten+10;
+		for(int i = -11; i < 10; i++){
+			int j = midten+i;
+			board[j][venstreGrense] = null;
+			board[j][hoyreGrense] = null;
+			board[ovreGrense][j] = null;
+			board[nedreGrense][j] = null;
+			board[j][venstreGrense+1] = new EksempelTile("e");
+			board[j][hoyreGrense-1] = new EksempelTile("e");
+			board[ovreGrense+1][j] = new EksempelTile("e");
+			board[nedreGrense-1][j] = new EksempelTile("e");
+		}
+		board[midten+1][midten] = null;
+		board[midten-1][midten] = null;
+		board[midten][midten-1] = null;
+		plasserViktig();
+	}
+	
+	private void plasserViktig(){
+		int midten = (dim/2);
+		Random rand = new Random();
+		int x = rand.nextInt(19);
+		int y = rand.nextInt(19);
+		x = x>=10 ? x-20 : x;
+		y = y>=10 ? y-20 : y;
+		board[midten+x][midten+y] = new EksempelTile("c");
+	}
+
+	public ArrayList<Integer> getInt() {
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		for(int i = (dim/2)-10; i < (dim/2)+10; i ++){ // Jeg tar den midterste halvdelen, så det ikke kommer så mye.
+			for(int j = (dim/2)-9; j < (dim/2)+9; j ++){
+				if(board[j][i] == null){
+					s.add(9);
+				}
+				else{
+					s.add(board[j][i].getInt());
+				}
+			}
+		}
+		System.out.println(s.size());
 		return s;
 	}
 }
