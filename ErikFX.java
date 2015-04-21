@@ -86,7 +86,7 @@ public class ErikFX extends Application {
 					hoved.sok();
 					break;
 				case R:
-					bok_text.setText(hoved.getbok());
+//					bok_text.setText(hoved.getbok());
 					if(bokSynlig){
 						tekst.setVisible(false);
 						root.setVisible(true);

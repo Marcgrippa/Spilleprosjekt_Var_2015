@@ -48,6 +48,8 @@ public abstract class AbstractTile {
 			return 2;
 		case "c":
 			return 5;
+		case "z":
+			return 7;
 		default:
 			return 0;
 		}

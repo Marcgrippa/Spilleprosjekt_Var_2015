@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ErikFXHoved {
 
 	int[] romFordeling = {200, 200, 0, 0, 20, 0, 0, 0, 0};
-	int[] tingFordeling = {15, 5, 5, Dagbok.getAntallSiderTotal()};
+	int[] tingFordeling = {30, 30, 30, Dagbok.getAntallSiderTotal()};
 	RoomFactory liste = new RoomFactory(romFordeling);
 	ItemFactory ting = new ItemFactory(tingFordeling);
 	ArrayList<Item> unfoundItems = ting.getList();
@@ -13,12 +13,11 @@ public class ErikFXHoved {
 	int dim = Brett.getDim();
 	Human mann = new Human(dim/2, dim/2);
 	String rom = brett.getType(mann.getX(), mann.getY());
+	boolean stromPa = false;
+	boolean mottMerkel = false;
 	
 	public ErikFXHoved(){
-		init();
-	}
-	
-	private static void init(){
+		
 	}
 	
 	public void start(){
@@ -67,7 +66,7 @@ public class ErikFXHoved {
 		if(rom.equals("d")){
 			kamp();
 		}
-		else if(rom.equals("b")){
+		else if(rom.equals("b") && !mottMerkel){
 			forsteMote();
 		}
 		mann.endreSult(-1);
@@ -151,7 +150,7 @@ public class ErikFXHoved {
 		return brett.streng(mann.getX(), mann.getY());
 	}
 	
-	public String getbok(){
+	public ArrayList<String> getbok(){
 		return mann.getDagBok();
 	}
 	
@@ -193,9 +192,18 @@ public class ErikFXHoved {
 	
 	private void forsteMote(){
 		mann.endreLiv(-50);
+		mottMerkel = true;
 	}
 
 	public ArrayList<Integer> getBrettInt() {
 		return brett.getInt();
+	}
+	
+	public void setStromPa(){
+		this.stromPa = true;
+	}
+
+	public ArrayList<String> getHelBok() {
+		return mann.getHelBok();
 	}
 }

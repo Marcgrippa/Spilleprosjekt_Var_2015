@@ -256,6 +256,7 @@ public class Brett {
 		x = x>=10 ? x-20 : x;
 		y = y>=10 ? y-20 : y;
 		board[midten+x][midten+y] = new EksempelTile("c");
+		board[midten][midten] = new EksempelTile("z");
 	}
 
 	public ArrayList<Integer> getInt() {

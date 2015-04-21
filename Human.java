@@ -95,11 +95,15 @@ public class Human {
 		dagbok.printBok();
 	}
 	
-	public String getDagBok(){
-		return dagbok.streng();
+	public ArrayList<String> getDagBok(){
+		return dagbok.getList();
 	}
 	
 	public void fullSult(){
 		this.sult = 10;
+	}
+
+	public ArrayList<String> getHelBok() {
+		return dagbok.getHelList();
 	}
 }

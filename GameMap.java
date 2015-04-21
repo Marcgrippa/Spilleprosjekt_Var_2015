@@ -1,9 +1,11 @@
 package spillprosjekt;
 
 import java.util.ArrayList;
-import java.util.Random;
-
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +20,9 @@ public class GameMap {
 	private Group roomImages = new Group();
 	private Group background;
 	private Group mainGroup;
+	private Group mainGroup1;
+	private Group instructionGroup;
+	private Group dagBokGroup;
 	public final static int pixels = 32;
 	private PlayerView playerV;
 	private ErikFXHoved hoved;
@@ -27,11 +32,15 @@ public class GameMap {
 	private Text bandagesV;
 	private Text shotsV;
 	private Text inventoryV;
+	private Button howToKnapp;
+	private Boolean stromPa = false;
 	
 	
 	public GameMap(){
 		hoved = new ErikFXHoved();
 		hoved.start();
+		initInstructionScreen();
+		initDagBokScreen();
 		initGameMap(hoved.getBrettInt());
 	}
 	
@@ -52,42 +61,87 @@ public class GameMap {
 				roomImages.getChildren().add(rooms[x][y]);	
 			}
 		}
+		
+		howToKnapp = new Button("Hva gjør knappene??");
+		howToKnapp.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent arg0) {
+				oppdaterDagBokScreen();
+				mainGroup1.setVisible(false);
+				instructionGroup.setVisible(true);
+			}
+		});
 		initBackground();
 		playerV = new PlayerView((10*pixels)+9,10*pixels);
 		Group player = new Group(playerV);
-		mainGroup = new Group(initBackground(), roomImages,player, initStatView());
+		mainGroup1 = new Group(initBackground(), roomImages,player, initStatView(), howToKnapp);
+		mainGroup1.setVisible(false);
+		dagBokGroup.setVisible(false);
+		mainGroup = new Group(mainGroup1, instructionGroup, dagBokGroup);
 	}
+	
+	private void initInstructionScreen(){
+		Text instructionText = new Text("Her er det forklart hva knappene gjør:");
+		Text pilTastOpp = new Text("piltast opp: beveger deg opp.");
+		Text pilTastNed = new Text("piltast ned: beveger deg ned.");
+		Text pilTastVenstre = new Text("piltast venstre: beveger deg til venstre.");
+		Text pilTastHoyre = new Text("piltast opp: beveger deg til høyre.");
+		Text I = new Text("i: åpner inventoryen.");
+		Text S = new Text("s: søker i det rommet du er i, hvis du kan gjøre det.");
+		Text R = new Text("r: leser det du har funnet så langt av dagboken.");
+		Text E = new Text("e: spiser mat, hvis du har det.");
+		Text B = new Text("b: bandasjerer deg selv.");
+		Text P = new Text("p: forsøker å skru på strømmen i det rommet du er i.");
+		Button tilbakeKnapp = new Button("Start spillet!");
+		tilbakeKnapp.setOnAction(new EventHandler<ActionEvent>() {
 
-//	private void initGameMap1() {
-//		rooms = new Room[numberOfX][numberOfY];
-//		for (int x = 0; x < numberOfX; x++){
-//			for (int y = 0; y < numberOfY; y++){
-//				
-//				rooms[x][y] = new Room(new Random().nextInt(2),x,y);
-//				
-//				
-//			}
-//		}
-//		for (int x = 0; x < numberOfX; x++){
-//			for (int y = 0; y < numberOfY; y++){
-//				rooms[x][y].setTranslateX((x*pixels));
-//				rooms[x][y].setTranslateY((y*pixels)+24);
-//				rooms[x][y].setVisible(false);
-//				roomImages.getChildren().add(rooms[x][y]);	
-//			}
-//		}
-//		initBackground();
-//		playerV = new PlayerView((9*pixels)+8,9*pixels);
-//		Group player = new Group(playerV);
-//		mainGroup = new Group(roomImages,player);
-//		
-//		
-//		
-//	}
+			@Override
+			public void handle(ActionEvent arg0) {
+				mainGroup1.setVisible(true);
+				instructionGroup.setVisible(false);
+				tilbakeKnapp.setText("Tilbake til spillet.");
+			}
+			
+		});
+		VBox boks = new VBox(tilbakeKnapp, instructionText, pilTastOpp, pilTastNed, pilTastVenstre, pilTastHoyre, I, S, R, E, B, P);
+		BoksIterator boksIterator = new BoksIterator(boks);
+		while(boksIterator.hasNext()){ 
+			Object node = boksIterator.next();
+			if(node instanceof Text){
+				((Text) node).setFont(Font.font("Kai", 24));
+			}
+		}
+		instructionGroup = new Group(boks);
+	}
+	
+	private void initDagBokScreen(){
+		ArrayList<String> sider = hoved.getHelBok();
+		VBox boks = new VBox();
+		for(String side : sider){
+			boks.getChildren().add(new Text(side));
+		}
+		dagBokGroup = new Group(boks);
+	}
+	
+	private void oppdaterDagBokScreen(){
+		for(int i = 0; i < Dagbok.getAntallSiderTotal(); i++){
+			ArrayList<String> liste = hoved.getbok();
+			Node s = ((VBox) dagBokGroup.getChildren().get(0)).getChildren().get(i);
+			if(liste.get(i).equals("tom side")){
+				System.out.println(((Text) s).getText());
+				s.setVisible(false);
+				System.out.println("falsk");
+			}
+			else{
+				s.setVisible(true);
+				System.out.println("sann");
+			}
+		}
+	}
 	
 	private Group initBackground(){
 		Image background = new Image("file:images/bakgrunn.png");
 		ImageView view = new ImageView(background);
+		view.setFitWidth(640);
 		this.background = new Group(view);
 		return this.background;
 		
@@ -124,7 +178,15 @@ public class GameMap {
 			FXSok();
 			break;
 		case R:
-			
+			hoved.les();
+			if(dagBokGroup.isVisible()){
+				dagBokGroup.setVisible(false);
+				mainGroup1.setVisible(true);
+			}
+			else{
+				dagBokGroup.setVisible(true);
+				mainGroup1.setVisible(false);
+			}
 			break;
 		case E:
 			hoved.spis();
@@ -133,18 +195,37 @@ public class GameMap {
 			hoved.bandasje();
 			break;
 		case P:
-			hoved.sov();
+			FXSkruPa();
 			break;
 		default:
 			break;
 		}
-		oppdaterTekst();
+		oppdaterTilstand();
 	}
 	
-	private void oppdaterTekst(){
-		
+	private void oppdaterTilstand(){
+		lifeV.setText(Integer.toString(hoved.getLiv()));
+		hungerV.setText(Integer.toString(hoved.getSult()));
+		foodV.setText(Integer.toString(hoved.antallMat()));
+		bandagesV.setText(Integer.toString(hoved.antallBandasje()));
+		shotsV.setText(Integer.toString(hoved.antallSkudd()));
+		if(sjekkStrom()){
+			lifeV.setText("Eqrwerwer");
+			this.stromPa = true;
+		}
 	}
 	
+	private boolean sjekkStrom() {
+		for(Room[] rad : rooms){
+			for(Room rom : rad){
+				if(rom.getType() == 4){					
+					return false;
+				}
+			}			
+		} 
+		return true;
+	}
+
 	private Group initStatView(){
 		Text life = new Text(50,50,"Life:");
 		Text hunger = new Text(50,50,"Hunger:");
@@ -183,5 +264,11 @@ public class GameMap {
 		int x = playerV.getRoomXPos();
 		int y = playerV.getRoomYPos();
 		rooms[x][y].sok();
+	}
+	
+	private void FXSkruPa(){
+		int x = playerV.getRoomXPos();
+		int y = playerV.getRoomYPos();
+		rooms[x][y].skruPa();
 	}
 }
