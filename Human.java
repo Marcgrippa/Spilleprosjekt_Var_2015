@@ -14,7 +14,7 @@ public class Human {
 	public Human(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.sult = 10;
+		this.sult = 100;
 		dagbok = new Dagbok("Dagbok");
 		inventory.add(dagbok);
 		liv = 150;

@@ -66,7 +66,6 @@ public class PlayerView extends ImageView {
 		case 'w':
 			if (yPosition-32 > 24){
 				if(rooms[roomXPos][roomYPos-1].isEmpty()){
-					System.out.println("nei");
 					return;
 				}
 				this.setTranslateY(yPosition-32);
@@ -80,7 +79,6 @@ public class PlayerView extends ImageView {
 		case 's':
 			if (yPosition+32 < 600){
 				if(rooms[roomXPos][roomYPos+1].isEmpty()){
-					System.out.println("nei");
 					return;
 				}
 				this.setTranslateY(yPosition+32);
@@ -93,7 +91,6 @@ public class PlayerView extends ImageView {
 		case 'a':
 			if (xPosition-32 > 0){
 				if(rooms[roomXPos-1][roomYPos].isEmpty()){
-					System.out.println("nei");
 					return;
 				}
 				this.setTranslateX(xPosition-32);
@@ -105,7 +102,6 @@ public class PlayerView extends ImageView {
 		case 'd':
 			if (xPosition+32 < 640){
 				if(rooms[roomXPos+1][roomYPos].isEmpty()){
-					System.out.println("nei");
 					return;
 				}
 				this.setTranslateX(xPosition+32);

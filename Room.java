@@ -14,14 +14,10 @@ public class Room extends ImageView {
 	public final static Image control = new Image("file:images/controlRoom.png");
 	public final static Image lighted = new Image("file:images/lighted.png");
 	public final static Image sleep = new Image("file:images/sleepingRoom.png");
-	private int xPosition;
-	private int yPosition;
 	private int type;
 	private boolean isEmpty;
 	
 	public Room(int type, int xPosition, int yPosition){
-		this.xPosition = xPosition;
-		this.yPosition = yPosition;
 		this.type = type;
 		this.isEmpty = false;
 		switch (type){
@@ -37,14 +33,6 @@ public class Room extends ImageView {
 		}
 	}
 	
-	public int getxPosition() {
-		return xPosition;
-	}
-
-	public int getyPosition() {
-		return yPosition;
-	}
-
 	public boolean isEmpty(){
 		return this.isEmpty;
 	}

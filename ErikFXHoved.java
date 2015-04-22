@@ -15,6 +15,7 @@ public class ErikFXHoved {
 	String rom = brett.getType(mann.getX(), mann.getY());
 	boolean stromPa = false;
 	boolean mottMerkel = false;
+	Item sistFunnet;
 	
 	public ErikFXHoved(){
 		
@@ -98,10 +99,13 @@ public class ErikFXHoved {
 	
 	public void sok(){
 		if(rom.equals("s")){
-			mann.addItem(unfoundItems.get(0));
+			Item t = unfoundItems.get(0);
+			mann.addItem(t);
 			unfoundItems.remove(0);
+			sistFunnet = t;
 			brett.tattTing(mann.getX(), mann.getY());
 			System.out.println(mann.getInventory());
+			rom = brett.getType(mann.getX(), mann.getY());
 		}
 		else{
 			System.out.println("Dette rommet er tomt.");
@@ -114,7 +118,7 @@ public class ErikFXHoved {
 	
 	public void spis(){
 		if(mann.checkInventory(new Item("Mat"))){
-			mann.endreSult(3);
+			mann.endreSult(15);
 			mann.removeItem(new Item("Mat"));
 		}
 		else{
@@ -205,5 +209,27 @@ public class ErikFXHoved {
 
 	public ArrayList<String> getHelBok() {
 		return mann.getHelBok();
+	}
+	
+	public Item getSistFunnet(){
+		return this.sistFunnet;
+	}
+
+	public String merkelMote(String string) {
+		switch(string){
+		case "boksekamp":
+			mann.endreLiv(-15);			
+			if(mann.getLiv() < 1){
+				return ("Du er egentlig død,\nmen siden dette ikke er\nferdig versjon får du\nspille videre.");
+			}
+			else{
+				return ("Du overlevde uten\nnoen komplikasjoner.\nGratulerer.");				
+			}
+		case "skyting":
+			mann.removeItem(new Item("Skudd"));
+			return("Du brukte ett av skuddene\ndine for å skremme bort\nmerkel. Du mister ingen liv.");			
+		default:
+			return "Dette er feil, merkelmøte.";
+		}
 	}
 }

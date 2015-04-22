@@ -1,6 +1,8 @@
 package spillprosjekt;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,6 +25,7 @@ public class GameMap {
 	private Group mainGroup1;
 	private Group instructionGroup;
 	private Group dagBokGroup;
+	private Group merkelGroup;
 	public final static int pixels = 32;
 	private PlayerView playerV;
 	private ErikFXHoved hoved;
@@ -33,12 +36,16 @@ public class GameMap {
 	private Text shotsV;
 	private Text inventoryV;
 	private Button howToKnapp;
+	private Button alt1;
+	private Button alt2;
+	private ShowMessage message;
 	private Boolean stromPa = false;
 	
 	
 	public GameMap(){
 		hoved = new ErikFXHoved();
 		hoved.start();
+		initMerkelGroup();
 		initInstructionScreen();
 		initDagBokScreen();
 		initGameMap(hoved.getBrettInt());
@@ -66,17 +73,29 @@ public class GameMap {
 		howToKnapp.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent arg0) {
 				oppdaterDagBokScreen();
-				mainGroup1.setVisible(false);
-				instructionGroup.setVisible(true);
+				settSynlig("instructions");
 			}
 		});
 		initBackground();
+		initAltKnapper();
+		message = new ShowMessage("Er Erik dust? ");
+		Group textG = new Group(message.getBox());
 		playerV = new PlayerView((10*pixels)+9,10*pixels);
 		Group player = new Group(playerV);
-		mainGroup1 = new Group(initBackground(), roomImages,player, initStatView(), howToKnapp);
-		mainGroup1.setVisible(false);
-		dagBokGroup.setVisible(false);
+		mainGroup1 = new Group(initBackground(), roomImages,player, merkelGroup, initStatView(), howToKnapp, textG, alt1, alt2);
+		settSynlig("instructions");
 		mainGroup = new Group(mainGroup1, instructionGroup, dagBokGroup);
+	}
+
+	private void initAltKnapper() {
+		alt1 = new Button("Alternativ en");
+		alt2 = new Button("Alternativ to");
+		alt1.setTranslateX(200);
+		alt1.setTranslateY(370);
+		alt2.setTranslateX(400);
+		alt2.setTranslateY(370);
+		alt1.setVisible(false);
+		alt2.setVisible(false);
 	}
 	
 	private void initInstructionScreen(){
@@ -85,7 +104,7 @@ public class GameMap {
 		Text pilTastNed = new Text("piltast ned: beveger deg ned.");
 		Text pilTastVenstre = new Text("piltast venstre: beveger deg til venstre.");
 		Text pilTastHoyre = new Text("piltast opp: beveger deg til høyre.");
-		Text I = new Text("i: åpner inventoryen.");
+		Text I = new Text("i: åpner inventory.");
 		Text S = new Text("s: søker i det rommet du er i, hvis du kan gjøre det.");
 		Text R = new Text("r: leser det du har funnet så langt av dagboken.");
 		Text E = new Text("e: spiser mat, hvis du har det.");
@@ -96,8 +115,7 @@ public class GameMap {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				mainGroup1.setVisible(true);
-				instructionGroup.setVisible(false);
+				settSynlig("main");
 				tilbakeKnapp.setText("Tilbake til spillet.");
 			}
 			
@@ -139,12 +157,21 @@ public class GameMap {
 	}
 	
 	private Group initBackground(){
-		Image background = new Image("file:images/bakgrunn.png");
+		Image background = new Image("file:images/background.png");
 		ImageView view = new ImageView(background);
 		view.setFitWidth(640);
 		this.background = new Group(view);
 		return this.background;
 		
+	}
+	
+	private void initMerkelGroup(){
+		merkelGroup = new Group();
+		merkelGroup.getChildren().add(new MerkelView(13*pixels+9, 13*pixels));
+		merkelGroup.getChildren().add(new MerkelView(3*pixels+9, 4*pixels));
+		merkelGroup.getChildren().add(new MerkelView(7*pixels+9, 7*pixels));
+		merkelGroup.getChildren().add(new MerkelView(7*pixels+9, 10*pixels));
+		merkelGroup.getChildren().add(new MerkelView(1*pixels+9, 4*pixels));
 	}
 	
 	public Group getMainGroup(){
@@ -153,20 +180,25 @@ public class GameMap {
 	
 	
 	public void handle(KeyEvent e) {
+		message.getBox().setVisible(false);
 		switch(e.getCode()){
 		case UP:
+			merkelMove();
 			playerV.movePlayer('w', rooms);
 			hoved.opp();
 			break;
 		case DOWN:
+			merkelMove();
 			playerV.movePlayer('s', rooms);
 			hoved.ned();
 			break;
 		case LEFT:
+			merkelMove();
 			playerV.movePlayer('a', rooms);
 			hoved.venstre();
 			break;
 		case RIGHT:
+			merkelMove();
 			playerV.movePlayer('d', rooms);
 			hoved.hoyre();
 			break;
@@ -180,12 +212,11 @@ public class GameMap {
 		case R:
 			hoved.les();
 			if(dagBokGroup.isVisible()){
-				dagBokGroup.setVisible(false);
-				mainGroup1.setVisible(true);
+				settSynlig("main");
 			}
 			else{
-				dagBokGroup.setVisible(true);
-				mainGroup1.setVisible(false);
+				oppdaterDagBokScreen();
+				settSynlig("dagBok");
 			}
 			break;
 		case E:
@@ -197,13 +228,28 @@ public class GameMap {
 		case P:
 			FXSkruPa();
 			break;
+		case V:
+			FXVinn();
 		default:
 			break;
 		}
 		oppdaterTilstand();
 	}
 	
+	private void FXVinn() {
+		int x = playerV.getRoomXPos();
+		int y = playerV.getRoomYPos();
+		if(rooms[x][y].getType() == 3){
+			if(stromPa){
+				//Vinner.
+			}			
+		}
+	}
+
 	private void oppdaterTilstand(){
+		if(mottMerkel()){
+			merkelMote();
+		}
 		lifeV.setText(Integer.toString(hoved.getLiv()));
 		hungerV.setText(Integer.toString(hoved.getSult()));
 		foodV.setText(Integer.toString(hoved.antallMat()));
@@ -213,6 +259,61 @@ public class GameMap {
 			lifeV.setText("Eqrwerwer");
 			this.stromPa = true;
 		}
+	}
+	
+	private void merkelMote(){
+		if(hoved.antallSkudd() == 0){
+			message.showMessage(hoved.merkelMote("boksekamp"));
+		}
+		else{
+			String s = "Du har møtt en merkel,\nmen du har skudd så du kan\nskyte og skremme hun bort.\nAlternativ 1: Du skyter merkel.\nAlternativ to: Du skyter ikke.";
+			altMerkelSkudd(s);
+		}
+	}
+	
+	private void altMerkelSkudd(String tekst){
+		message.showMessage(tekst);
+		alt1.setVisible(true);
+		alt2.setVisible(true);
+		alt1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				message.showMessage(hoved.merkelMote("skyting"));
+				alt1.setVisible(false);
+				alt2.setVisible(false);
+				lifeV.setText(Integer.toString(hoved.getLiv()));
+				hungerV.setText(Integer.toString(hoved.getSult()));
+				foodV.setText(Integer.toString(hoved.antallMat()));
+				bandagesV.setText(Integer.toString(hoved.antallBandasje()));
+				shotsV.setText(Integer.toString(hoved.antallSkudd()));
+			}
+		});
+		alt2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				message.showMessage(hoved.merkelMote("boksekamp"));
+				alt1.setVisible(false);
+				alt2.setVisible(false);
+				lifeV.setText(Integer.toString(hoved.getLiv()));
+				hungerV.setText(Integer.toString(hoved.getSult()));
+				foodV.setText(Integer.toString(hoved.antallMat()));
+				bandagesV.setText(Integer.toString(hoved.antallBandasje()));
+				shotsV.setText(Integer.toString(hoved.antallSkudd()));
+			}
+		});
+	}
+	
+	private boolean mottMerkel(){
+		int x = playerV.getRoomXPos();
+		int y = playerV.getRoomYPos();
+		for(Node n : merkelGroup.getChildren()){
+			int mx = ((MerkelView) n).getRoomXPos();
+			int my = ((MerkelView) n).getRoomYPos();
+			if(x == mx && y == my){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean sjekkStrom() {
@@ -264,11 +365,24 @@ public class GameMap {
 		int x = playerV.getRoomXPos();
 		int y = playerV.getRoomYPos();
 		rooms[x][y].sok();
+		message.showMessage("Du fant: " + hoved.getSistFunnet().getNavn().toLowerCase());
 	}
 	
 	private void FXSkruPa(){
 		int x = playerV.getRoomXPos();
 		int y = playerV.getRoomYPos();
 		rooms[x][y].skruPa();
+	}
+	
+	private void settSynlig(String rom){
+		mainGroup1.setVisible(rom.equals("main"));
+		instructionGroup.setVisible(rom.equals("instructions"));
+		dagBokGroup.setVisible(rom.equals("dagBok"));
+	}
+	
+	private void merkelMove(){
+		for(Node n : merkelGroup.getChildren()){
+			((MerkelView) n).move(rooms, playerV.getRoomXPos(), playerV.getRoomYPos());
+		}
 	}
 }

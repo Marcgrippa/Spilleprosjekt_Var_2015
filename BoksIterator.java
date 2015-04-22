@@ -12,7 +12,7 @@ public class BoksIterator implements Iterator<Object> {
 		this.i = 0;
 		this.boks = boks;
 	}
-	@Override
+	@Override 
 	public boolean hasNext() {
 		return boks.getChildren().size() > i;
 	}
